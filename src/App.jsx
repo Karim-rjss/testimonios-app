@@ -1,122 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState, useEffect, useRef } from 'react';
+import testimonios from './data';
+import Testimonial from "./components/Testimonial";
+import Controls from "./components/Controls";
+import "./styles.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  //guarda el indice del testimonio actual
+  const [index, setIndex] = useState(0);
+
+  //total de testimonios
+  const length = testimonios.length;
+
+  //referencia para el intervalo automatico
+  const autoRef = useRef(null);
+
+  //funcion para mostrar el siguiente testimonio
+  const siguiente = () => setIndex((prev) => (prev + 1) % length);
+  //funcion para mostrar el testimonio anterior
+  const anterior = () => setIndex((prev) => (prev - 1 + length) % length);
+  //funcion para mostrar un testimonio aleatorio (dif. al actual)
+  const aleatorio = () => {
+    let randIndex;
+    do {
+      randIndex = Math.floor(Math.random() * length);
+    } while (randIndex === index); //evita repetir el mismo testimonio
+    setIndex(randIndex);
+  };
+
+  //useEffect para configurar el intervalo automatico
+  useEffect(() => {
+    autoRef.current = setInterval(() => {
+      setIndex(i => (i + 1) % length);
+    }, 5000); //cambia cada 5 segundos
+
+    //limpiar el intervalo al desmontar el componente
+    return () => clearInterval(autoRef.current);
+  }, [length]);
+
+  const handleUserAction = (action) => {
+    clearInterval(autoRef.current); //reinicia el intervalo al interactuar
+    action(); //ejecuta la accion del usuario
+    autoRef.current = setInterval(() => {
+      setIndex(i => (i + 1) % length);
+    }, 5000); //reinicia el intervalo despues de la accion
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <main className="app">
+      <h1>Testimonios</h1>
 
-      <div className="ticks"></div>
+      {/* Tarjeta del testimonio actual */}
+      <div className="card-wrapper">
+        <Testimonial key={index} item={testimonios[index]} />
+      </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* botones de control */}
+      <Controls
+        onPrev={() => handleUserAction(anterior)}
+        onNext={() => handleUserAction(siguiente)}
+        onRandom={() => handleUserAction(aleatorio)}
+      />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* contador de testimonios */}
+      <p className="counter">{index + 1} / {length}</p>
+    </main>
+  );
 }
 
-export default App

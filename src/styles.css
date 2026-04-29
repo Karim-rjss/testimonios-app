@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-muted: #aeaeb2;
+  --border: rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-btn: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --radius-card: 20px;
+  --radius-btn: 980px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.app {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.app h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+/* ANIMACION FADE SUAVE */
+.card-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.testimonial-card {
+  background: var(--card);
+  padding: 40px 32px 36px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  border: 1px solid var(--border);
+
+  animation: slideUp 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* FOTO */
+.testimonial-photo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  display: block;
+  border: 3px solid #f0f0f2;
+}
+
+.testimonial-name {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.testimonial-role {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 22px;
+  letter-spacing: 0.01em;
+}
+
+.testimonial-text {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* SEPARADOR */
+.testimonial-divider {
+  width: 32px;
+  height: 2px;
+  background: var(--border);
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+/* BOTONES APPLE STYLE */
+.controls {
+  margin-top: 28px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-btn {
+  border: none;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all 0.18s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Botón primario (Siguiente) */
+.control-btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  padding: 10px 22px;
+  box-shadow: 0 1px 4px rgba(0, 113, 227, 0.3);
+}
+
+.control-btn-primary:hover {
+  background: var(--accent-hover);
+  transform: scale(1.03);
+  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.35);
+}
+
+.control-btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* Botones secundarios */
+.control-btn-secondary {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text-primary);
+  padding: 10px 18px;
+}
+
+.control-btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.10);
+  transform: scale(1.03);
+}
+
+.control-btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* CONTADOR */
+.counter {
+  color: var(--text-muted);
+  margin-top: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* DOTS */
+.dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: all 0.25s ease;
+}
+
+.dot.active {
+  background: var(--accent);
+  width: 18px;
+  border-radius: 3px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .app h1 {
+    font-size: 0.95rem;
+  }
+
+  .testimonial-card {
+    padding: 32px 24px 28px;
+  }
+
+  .testimonial-photo {
+    width: 76px;
+    height: 76px;
+  }
+
+  .control-btn-primary {
+    padding: 10px 18px;
+  }
+}
